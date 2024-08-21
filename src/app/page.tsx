@@ -1,14 +1,14 @@
-import Form from "./components/Form";
+import ActionPanel from "./components/ActionPanel";
 import Loader from "./components/Loader";
-import Output from "./components/Output";
+import OutputPanel from "./components/OutputPanel";
 
 export default function Home() {
   return (
     <>
       <main className="flex justify-center">
-        <Form />
+        <ActionPanel />
         <Loader />
-        <Output />
+        <OutputPanel />
       </main>
     </>
   );
