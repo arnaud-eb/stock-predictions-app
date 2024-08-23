@@ -1,8 +1,16 @@
-export default function ReportPage() {
+import Image from "next/image";
+
+export default function Loading() {
   return (
-    <div>
-      <h1>Report Page</h1>
-      {/* Add your report content here */}
+    <div className="flex flex-col items-center justify-around text-center flex-1">
+      <Image
+        src="/loader.svg"
+        alt="loading"
+        width={200}
+        height={200}
+        priority
+      />
+      <div>Querying Stocks API...</div>
     </div>
   );
 }

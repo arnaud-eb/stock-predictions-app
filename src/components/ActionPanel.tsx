@@ -72,7 +72,14 @@ const ActionPanel: FC = () => {
         <p>Your tickers will appear here...</p>
       )}
       <Link
-        href={tickers.length ? "/report" : "#"}
+        href={
+          tickers.length
+            ? {
+                pathname: "/report",
+                query: { tickers },
+              }
+            : "#"
+        }
         className={twJoin(
           "w-3/4 py-4 px-6 cursor-pointer border-2 border-black bg-green-400 uppercase font-medium text-center",
           !tickers.length && "opacity-50 cursor-not-allowed"

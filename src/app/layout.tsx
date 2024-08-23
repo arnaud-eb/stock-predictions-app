@@ -28,8 +28,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${poppins.variable} ${comic_neue.variable}`}>
-      <body className="bg-slate-100">
+    <html
+      lang="en"
+      className={`${poppins.variable} ${comic_neue.variable} min-h-screen`}
+    >
+      <body className="bg-slate-100 min-h-screen flex flex-col overscroll-none">
         <Header />
         {children}
         <Footer />

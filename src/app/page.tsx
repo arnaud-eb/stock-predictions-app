@@ -1,13 +1,11 @@
 import ActionPanel from "../components/ActionPanel";
-import Loader from "../components/Loader";
 import OutputPanel from "../components/OutputPanel";
 
 export default function Home() {
   return (
     <>
-      <main className="flex justify-center">
+      <main className="flex justify-center flex-1">
         <ActionPanel />
-        <Loader />
         <OutputPanel />
       </main>
     </>
