@@ -21,15 +21,27 @@ const fetchStockData = async (tickers: string[]) => {
 };
 
 const fetchReport = async (stockData: string) => {
-  const report = await openai.chat.completions.create({
-    model: "gpt-4o",
-    messages: [
-      {
-        role: "user",
-        content: "how are you today?",
-      },
-    ],
-  });
+  try {
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o",
+      messages: [
+        {
+          role: "system",
+          content:
+            "You are a trading guru. Given data on share prices over the past 3 days, write a report of no more than 150 words describing the stocks performance and recommending whether to buy, hold or sell.",
+        },
+        {
+          role: "user",
+          content: stockData,
+        },
+      ],
+    });
+
+    return completion.choices[0].message.content;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Enable to access AI.");
+  }
 };
 
 const ReportPage = async ({
@@ -39,16 +51,12 @@ const ReportPage = async ({
 }) => {
   const stockData = await fetchStockData(searchParams.tickers);
   // TODO: update status in loading component
-
-  if (stockData) {
-    fetchReport(stockData);
-  }
+  const textReport = stockData ? await fetchReport(stockData) : "no data";
 
   return (
-    <div className="flex-1">
-      <h1>Report Page</h1>
-      {/* Add your report content here */}
-    </div>
+    <main className="flex-1">
+      <p>{textReport}</p>
+    </main>
   );
 };
 
