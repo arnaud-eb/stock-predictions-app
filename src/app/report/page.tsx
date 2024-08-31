@@ -1,7 +1,9 @@
+import Loader from "@/components/Loader";
 import { dates } from "@/utils/dates";
 import { openai } from "@/utils/openai";
+import { Suspense } from "react";
 
-const fetchStockData = async (tickers: string[]) => {
+async function fetchStockData(tickers: string[]) {
   const tickersArray = Array.isArray(tickers) ? tickers : [tickers];
   try {
     const stockData = await Promise.all(
@@ -18,9 +20,9 @@ const fetchStockData = async (tickers: string[]) => {
     console.error(error);
     throw new Error("Error fetching stock data");
   }
-};
+}
 
-const fetchReport = async (stockData: string) => {
+async function fetchReport(stockData: string) {
   try {
     const completion = await openai.chat.completions.create({
       model: "gpt-4o",
@@ -42,22 +44,28 @@ const fetchReport = async (stockData: string) => {
     console.error(error);
     throw new Error("Enable to access AI.");
   }
-};
+}
 
-const ReportPage = async ({
+async function Report({ stockData }: { stockData: string }) {
+  const report = await fetchReport(stockData);
+  return (
+    <main className="flex-1 py-4 px-8 border-solid border-2 border-black my-6 mx-8 flex flex-col items-center">
+      <h2 className="mb-2">Your Report 😜</h2>
+      <p>{report}</p>
+    </main>
+  );
+}
+
+export default async function ReportPage({
   searchParams,
 }: {
   searchParams: { tickers: string[] };
-}) => {
+}) {
   const stockData = await fetchStockData(searchParams.tickers);
-  // TODO: update status in loading component
-  const textReport = stockData ? await fetchReport(stockData) : "no data";
 
   return (
-    <main className="flex-1">
-      <p>{textReport}</p>
-    </main>
+    <Suspense fallback={<Loader text="Creating report..." />}>
+      <Report stockData={stockData} />
+    </Suspense>
   );
-};
-
-export default ReportPage;
+}
